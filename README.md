@@ -29,9 +29,10 @@ linewidth = 600
 gal_freq, gal_flux =spectrum(13.7, 4.43, 332, 377, 1500, 600)
 
 plotspectrum(gal_freq, gal_flux)
+```
 
 ![Example](/example.png)
-```
+
 
 ## Installation
 ```pip install galspec```
