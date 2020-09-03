@@ -26,12 +26,12 @@ fLow = 332 #GHz
 fHigh = 377 #GHz
 numFreqBins = 1500
 linewidth = 600
-gal_freq, gal_flux =spectrum(13.7, 4.43, 332, 377, 1500, 600)
+gal_freq, gal_flux =spectrum(luminosity, z, fLow, fHigh, numFreqBins, linewidth)
 
 plotspectrum(gal_freq, gal_flux)
 ```
 
-![Example](/example.png)
+![Example](/example_spectrum.png)
 
 
 ## Installation
