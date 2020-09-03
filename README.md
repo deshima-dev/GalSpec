@@ -1,5 +1,6 @@
 # GalSpec package
-This package is intended to quickly and easily generate a galaxy spectrum with a blackbody continuum emission and CO and CII emission lines. 
+This package is intended to quickly and easily generate a galaxy spectrum with a blackbody continuum emission and CO and CII emission lines.
+Code by Tom Bakx, packaging by Stefanie Brackenhoff
 
 ## Functionalities & Usage
 * A spectrum can be generated using the ```spectrum()``` function. 
