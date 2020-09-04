@@ -1,5 +1,10 @@
 # GalSpec package
-This package is intended to quickly and easily generate a galaxy spectrum with a blackbody continuum emission and CO and CII emission lines.
+This package is intended to quickly and easily generate a galaxy spectrum with a blackbody continuum emission and emission lines. The lines in this package are:
+* CO lines (Kamenetzky)
+* SIII, SiII
+* OIII, OI 
+* NII 
+* CII, CI
 Code by Tom Bakx, packaging by Stefanie Brackenhoff
 
 ## Functionalities & Usage
