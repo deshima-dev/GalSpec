@@ -5,7 +5,8 @@ This package is intended to quickly and easily generate a galaxy spectrum with a
 * OIII, OI 
 * NII 
 * CII, CI
-Code by Tom Bakx, packaging by Stefanie Brackenhoff
+
+*Code by Tom Bakx, packaging by Stefanie Brackenhoff*
 
 ## Functionalities & Usage
 * A spectrum can be generated using the ```spectrum()``` function. 
