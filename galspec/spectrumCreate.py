@@ -10,12 +10,8 @@
 ##-----------------------------------------
 
 import numpy as np
-import os
-import os.path
-import sys
 from astropy.cosmology import Planck15 as cosmo
 from matplotlib import pyplot as plt
-sys.path.append('./GalaxySpectrum/')
 
 orange = '#ff9500'#(1,0.584,0)
 blue =  '#007aff'  #(0,.478,1) blue
@@ -31,11 +27,9 @@ T_hot      = 43.7
 Ratio       = 28.67
 Beta        = 1.97
 
-
 ##-----------------------------------------
 ## Fit a bb-template for redshift and amplitude
 ##-----------------------------------------
-
 
 def tomModel(v,Amp,z,T_cold,T_hot,Ratio,Beta):
     # Give the flux densities of the modeled SED at the requested frequencies v, at redshift z
@@ -122,23 +116,19 @@ def LFIRtoSL(Luminosity,z,variance,COlines='Kamenetzky',lines='Bonato',giveNames
     outputArray = np.zeros([25,4])
     # Load spectral line intensities
     if COlines == 'Kamenetzky':
-        if __name__ == "__main__":
-            path = ''
-        else:
-            path = os.getcwd()#'./GalaxySpectrum'
-        slco = np.genfromtxt(path + './K17_Table7', skip_header=1, dtype=np.float, delimiter=", ", unpack = False)
+        slco = np.genfromtxt('./K17_Table7', skip_header=1, dtype=np.float, delimiter=", ", unpack = False)
     elif COlines == 'Rosenboom':
-        slco = np.loadtxt(path + './COcoeff', dtype=np.float, delimiter=" ", unpack = False)
+        slco = np.loadtxt('./COcoeff', dtype=np.float, delimiter=" ", unpack = False)
     else:
         print('Did not recognise the CO-lines library, will be using Kamenetzky')
-        slco = np.genfromtxt(path + './K17_Table7', skip_header=1, dtype=np.float, delimiter=", ", unpack = False)
+        slco = np.genfromtxt('./K17_Table7', skip_header=1, dtype=np.float, delimiter=", ", unpack = False)
     if lines == 'Bonato':
-        sl = np.loadtxt(path + './coeffBonato', dtype=np.float, delimiter="    ", unpack = False)
+        sl = np.loadtxt('./coeffBonato', dtype=np.float, delimiter="    ", unpack = False)
     elif lines == 'Spinoglio':
-        sl = np.loadtxt(path + './coeff_spinoglio', dtype=np.float, delimiter=", ", unpack = False)
+        sl = np.loadtxt('./coeff_spinoglio', dtype=np.float, delimiter=", ", unpack = False)
     else:
         print('Did not recognise the line-library, will be using Bonatos line estimates')
-        sl = np.loadtxt(path + './coeffBonato', dtype=np.float, delimiter="    ", unpack = False)
+        sl = np.loadtxt('./coeffBonato', dtype=np.float, delimiter="    ", unpack = False)
     for i in range(13):
         outputArray[i,0] = ((1.e-9)*(i+1)*(115*(10**9))/(1+z)) # The CO lines 1-0 to 13-12
     outputArray[13,0] = ((1.e-9)*c/((1+z)*33.48e-6)) # SIII
