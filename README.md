@@ -21,15 +21,17 @@ This function takes the outputs of ```spectrum()``` as an input and creates a pl
 
 ## Example
 ```
+import galspec
+
 luminosity = 13.7
 z = 4.43
 fLow = 332 #GHz
 fHigh = 377 #GHz
 numFreqBins = 1500
 linewidth = 600
-gal_freq, gal_flux =spectrum(luminosity, z, fLow, fHigh, numFreqBins, linewidth)
+gal_freq, gal_flux = galspec.spectrum(luminosity, z, fLow, fHigh, numFreqBins, linewidth)
 
-plotspectrum(gal_freq, gal_flux)
+galspec.plotspectrum(gal_freq, gal_flux)
 ```
 
 ![Example](/example_spectrum.png)
