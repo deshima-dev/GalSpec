@@ -12,23 +12,16 @@ This package is intended to quickly and easily generate a galaxy spectrum with a
 * A spectrum can be generated using the ```spectrum()``` function. 
 
 It takes the following inputs:
-
-**luminosity** in units of log(L_fir [L_sol])
-
-**redshift** z
-
-**fLow, fHigh** minimum and maximum frequency that will be in the spectrum in units of GHz
-
-**numFreqBins** amount of linearly spaced frequency bins at which the spectrum should be evaluated
-
-**linewidth** width of spectral lines in units of km/s
+* **luminosity** in units of log(L_fir [L_sol])
+* **redshift** z
+* **fLow, fHigh** minimum and maximum frequency that will be in the spectrum in units of GHz
+* **numFreqBins** amount of linearly spaced frequency bins at which the spectrum should be evaluated
+* **linewidth** width of spectral lines in units of km/s
 
 
 And creates as output:
-
-**freqArray** array frequencies in units of GHz
-
-**spectrum** array of the flux densities in the spectrum in units of Jy
+* **freqArray** array frequencies in units of GHz
+* **spectrum** array of the flux densities in the spectrum in units of Jy
 
 
 * The spectrum can quickly be plotted using the ```plotspectrum()``` function
