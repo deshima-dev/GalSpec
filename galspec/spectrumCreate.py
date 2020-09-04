@@ -12,6 +12,9 @@
 import numpy as np
 from astropy.cosmology import Planck15 as cosmo
 from matplotlib import pyplot as plt
+from pathlib import Path
+
+
 
 orange = '#ff9500'#(1,0.584,0)
 blue =  '#007aff'  #(0,.478,1) blue
@@ -115,20 +118,23 @@ def LFIRtoSL(Luminosity,z,variance,COlines='Kamenetzky',lines='Bonato',giveNames
     lSun = 3.826e26
     outputArray = np.zeros([25,4])
     # Load spectral line intensities
+    pathK17 = Path(__file__).parent / "K17_Table7"
+    pathBonato = Path(__file__).parent / "coeffBonato"
+    pathSpin = Path(__file__).parent / "coeff_spinoglio"
     if COlines == 'Kamenetzky':
-        slco = np.genfromtxt('./K17_Table7', skip_header=1, dtype=np.float, delimiter=", ", unpack = False)
+        slco = np.genfromtxt(pathK17, skip_header=1, dtype=np.float, delimiter=", ", unpack = False)
     elif COlines == 'Rosenboom':
-        slco = np.loadtxt('./COcoeff', dtype=np.float, delimiter=" ", unpack = False)
+        slco = np.loadtxt(pathK17, dtype=np.float, delimiter=" ", unpack = False)
     else:
         print('Did not recognise the CO-lines library, will be using Kamenetzky')
-        slco = np.genfromtxt('./K17_Table7', skip_header=1, dtype=np.float, delimiter=", ", unpack = False)
+        slco = np.genfromtxt(pathK17, skip_header=1, dtype=np.float, delimiter=", ", unpack = False)
     if lines == 'Bonato':
-        sl = np.loadtxt('./coeffBonato', dtype=np.float, delimiter="    ", unpack = False)
+        sl = np.loadtxt(pathBonato, dtype=np.float, delimiter="    ", unpack = False)
     elif lines == 'Spinoglio':
-        sl = np.loadtxt('./coeff_spinoglio', dtype=np.float, delimiter=", ", unpack = False)
+        sl = np.loadtxt(pathSpin, dtype=np.float, delimiter=", ", unpack = False)
     else:
         print('Did not recognise the line-library, will be using Bonatos line estimates')
-        sl = np.loadtxt('./coeffBonato', dtype=np.float, delimiter="    ", unpack = False)
+        sl = np.loadtxt(pathBonato, dtype=np.float, delimiter="    ", unpack = False)
     for i in range(13):
         outputArray[i,0] = ((1.e-9)*(i+1)*(115*(10**9))/(1+z)) # The CO lines 1-0 to 13-12
     outputArray[13,0] = ((1.e-9)*c/((1+z)*33.48e-6)) # SIII
