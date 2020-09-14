@@ -1,9 +1,10 @@
 # GalSpec package
 This package is intended to quickly and easily generate a galaxy spectrum with a blackbody continuum emission and emission lines. The lines in this package are:
-* CO lines (Kamenetzky)
-* SIII, SiII
+* CO lines 
+* SIII
+* SiII
 * OIII, OI 
-* NII 
+* NIII, NII 
 * CII, CI
 
 *Code by Tom Bakx, packaging by Stefanie Brackenhoff*
@@ -81,6 +82,7 @@ galspec.plotspectrum(gal_freq, gal_flux)
 * Using manual ratios to only show CO lines
 ```
 import galspec
+import numpy as np
 
 luminosity = 13.7
 z = 4.43

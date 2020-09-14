@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="galspec", # Replace with your own username
-    version="0.0.8",
+    version="0.1.0",
     author="Tom Bakx (minor edits: Stefanie Brackenhoff)",
     description="Creates sample galaxy spectra in the GHz/THz range",
     long_description=long_description,
@@ -18,5 +18,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    package_data={"galspec": ["K17_Table7", "coeffBonato", "coeff_spinoglio"]},
+    package_data={"galspec": ["K17_Table7", "coeffBonato", "coeff_spinoglio", "COcoeff"]},
 )
