@@ -100,7 +100,7 @@ def gaus(x,a,x0,sigma):
 ## Generate spectral lines
 ##-----------------------------------------
 
-def LFIRtoSL(Luminosity,z,variance,COlines='Kamenetzky',lines='Bonato',giveNames='No'):
+def Atomiclines(Luminosity,z,variance,COlines='Kamenetzky',lines='Bonato',giveNames='No'):
     '''
     Input: Luminosity [log (Lo)], redshift (z), variance (0 - no OR 1 - yes), COlines (Kamenetzky OR Rosenberg), lines (Bonato OR Spinoglio), giveNames ('Table', 'Tex' OR 'No').
     This will produce a list of frequencies [GHz] and flux densities [Jy], with or without a random variance for the SLs:
@@ -111,7 +111,7 @@ def LFIRtoSL(Luminosity,z,variance,COlines='Kamenetzky',lines='Bonato',giveNames
     '''
     Dl = Dlpen(z,giveAnswerInMeters=True)
     Dlmpc = Dlpen(z,giveAnswerInMeters=False)
-    c = 3.0e8
+    c = 299792458.0 #m/s
     velocity = 600. #km/s
     df = velocity/300000. #km/s
     lSun = 3.826e26
@@ -228,8 +228,43 @@ def LFIRtoSL(Luminosity,z,variance,COlines='Kamenetzky',lines='Bonato',giveNames
         return outputArray,listOfSLs
     else:
         return outputArray
+    
+def molecularlines(freqArray, spectrum, z):
+    """
+    Parameters
+    ----------
+    freqArray : numpy array
+        Frequency values of a blackbody spectrum.
+    spectrum : numpy array
+        Flux density of a blackbody spectrum at the frequencies from freqArray.
+    z : float
+        Redshift.
 
-def spectrum(luminosity,redshift,fLow=220,fHigh=440,numFreqBins = 1500,linewidth=300,COlines='Kamenetzky',lines='Bonato',manualrescale = 'False', rescaleArray = []):
+    Returns
+    -------
+    outputArray : numpy array
+        Contains the frequencies of molecular lines in the first column and their amplitudes in the second column, scaled to match the blackbody flux.
+
+    """
+    #setup output array
+    outputArray = np.zeros([13,2])
+    #data
+    pathtable = Path().parent / "coeff_Rangwala"
+    sl = np.genfromtxt(pathtable, dtype=np.float, delimiter=",", comments = '#', unpack = False)
+    #frequencies are put into the output array
+    outputArray[:,0] = sl[:,0]/(1+z)
+    #amplitudes for the emission lines are scaled to BB*ratio
+    for i in range(5):
+        if freqArray[0]<=outputArray[i,0]<=freqArray[-1]:
+            outputArray[i,1]=sl[i,1]*spectrum[np.argmin(abs(freqArray-outputArray[i,0]))]
+    #amplitudes for the absorption lines are scaled to BB - BB*ratio
+    for i in range(5,13):
+        if freqArray[0]<=outputArray[i,0]<=freqArray[-1]:
+            outputArray[i,1]=(1-sl[i,1])*spectrum[np.argmin(abs(freqArray-outputArray[i,0]))]
+    return outputArray
+    
+
+def spectrum(luminosity,redshift,fLow=220,fHigh=440,numFreqBins = 1500,linewidth=300,COlines='Kamenetzky',lines='Bonato', mollines= 'True',variance=0,manualrescale = 'False', rescaleArray = []):
     """
     Creates a galaxy spectrum consisting of a blackbody continuum and spectral
     lines. Keywords:
@@ -243,7 +278,10 @@ def spectrum(luminosity,redshift,fLow=220,fHigh=440,numFreqBins = 1500,linewidth
     COlines: 'Kamenetzky' or 'Rosenberg' determines the amplitude of the 
               CO lines, default is Kamenetzky
     lines: 'Bonato' or 'Spinoglio' determines the amplitude of the remaining 
-           spectral lines, default is Bonato
+           spectral lines, default is 
+    mollines: 'True' or 'False'. Toggles whether molecularlines are shown
+    variance: adds uncertainty to the amplitude of the atomic lines. Variation 
+              in molecular lines not implemented in the current version.
     manualrescale: sets whether the lines should be default ratios by 
                    Kamenetzky/Rosenberg and Bonato/Spinoglio, or set by user
                    options: 'False' - default line amplitudes used
@@ -269,23 +307,38 @@ def spectrum(luminosity,redshift,fLow=220,fHigh=440,numFreqBins = 1500,linewidth
 	# Normalize the flux to the given far-IR luminosity
     normLum = giveLuminosity(np.array([spectrum[0],spectrum[0]]),np.array([1,1]),((3.e8)/((1.e9)*np.array([freqArray[0],freqArray[0]]))),redshift,T_cold,T_hot,Ratio,Beta)
     spectrum = (10.**luminosity)*spectrum/normLum
-	# Add the spectrum lines
-    B = LFIRtoSL(luminosity,redshift,0,COlines,lines)
+	# Get frequencies and amplitudes of the spectral lines
+    if mollines == 'True':
+        B = np.zeros([38,2])
+        B[:25,:] = Atomiclines(luminosity,redshift,variance,COlines,lines)[:,:2]
+        B[25:,:] = molecularlines(freqArray, spectrum, redshift)
+    elif mollines != 'False':
+        print('Invalid keyword for mollines, assuming False')
+        mollines = 'False'
+    if mollines == 'False':
+        B = Atomiclines(luminosity,redshift,variance,COlines,lines)
+    #in the case of absolute rescaling, the amplitude is set to the user input
     if manualrescale == 'Absolute':
         for i in range(len(B)):
             specLine = gaus(freqArray,rescaleArray[i],B[i,0],B[i,0]*linewidth/(3.e5))
-            spectrum += specLine
+            if i<=30: spectrum += specLine #emission
+            else: spectrum -= specLine #absorption
+    #in the case of relative rescaling, the amplitude is the original value
+    #multiplied by the user input
     elif manualrescale == 'Relative':
         for i in range(len(B)):
             specLine = gaus(freqArray,rescaleArray[i]*B[i,1]*(600/linewidth),B[i,0],B[i,0]*linewidth/(3.e5))
-            spectrum += specLine
+            if i<=30: spectrum += specLine #emission
+            else: spectrum -= specLine #absorption
+    #if no rescaling is set, the amplitude is the original value
     elif manualrescale != 'False':
         print('Invalid keyword for manualrescale. Assuming \'False\'')
         manualrescale = 'False'
     if manualrescale == 'False':
         for i in range(len(B)):
             specLine = gaus(freqArray,B[i,1]*(600/linewidth),B[i,0],B[i,0]*linewidth/(3.e5))
-            spectrum += specLine
+            if i<30: spectrum += specLine #emission
+            else: spectrum -= specLine #absorption
     return freqArray,spectrum
 
 def plotspectrum(freqArray, spectrumArray):
@@ -303,9 +356,24 @@ def plotspectrum(freqArray, spectrumArray):
     plt.ylim(bottom=0)
     plt.show()
     
-def linenames():
+def linenames(mollines='True'):
     """
+    mollines: 'True' or 'False'. Toggles whether molecularlines are shown
     Returns the names of the spectral lines from spectrum() in order in a numpy array
     """
-    B, names= LFIRtoSL(12,1,0, giveNames = 'Table')
+    B, names= Atomiclines(12,1,0, giveNames = 'Table')
+    if mollines == 'True':
+        names.append('H2O211-202')
+        names.append('H2O202-111')
+        names.append('H2O312-303')
+        names.append('H2O312-221')
+        names.append('H2O321-312')
+        names.append('CH+ (absorption)')
+        names.append('OH+01 (absorption)')
+        names.append('OH+22 (absorption)')
+        names.append('OH+12 (absorption)')
+        names.append('H2O111-000 (absorption)')
+        names.append('H2O+32 (absorption)')
+        names.append('H2O+21 (absorption)')
+        names.append('HF (absorption)')
     return np.array(names)
