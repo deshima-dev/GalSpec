@@ -249,7 +249,7 @@ def molecularlines(freqArray, spectrum, z):
     #setup output array
     outputArray = np.zeros([13,2])
     #data
-    pathtable = Path().parent / "coeff_Rangwala"
+    pathtable = Path(__file__).parent / "coeff_Rangwala"
     sl = np.genfromtxt(pathtable, dtype=np.float, delimiter=",", comments = '#', unpack = False)
     #frequencies are put into the output array
     outputArray[:,0] = sl[:,0]/(1+z)
