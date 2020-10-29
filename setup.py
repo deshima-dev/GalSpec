@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="galspec", # Replace with your own username
-    version="0.2.1",
+    version="0.2.2",
     author="Tom Bakx (edits: Stefanie Brackenhoff)",
     description="Creates sample galaxy spectra in the GHz/THz range",
     long_description=long_description,

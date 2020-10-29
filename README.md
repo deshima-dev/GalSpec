@@ -55,8 +55,8 @@ import galspec
 
 luminosity = 13.7
 z = 4.43
-fLow = 100 #GHz
-fHigh = 900 #GHz
+fLow = 90 #GHz
+fHigh = 910 #GHz
 numFreqBins = 1500
 linewidth = 600
 gal_freq, gal_flux = galspec.spectrum(luminosity, z, fLow, fHigh, numFreqBins, linewidth, mollines = 'False')
@@ -72,8 +72,8 @@ import galspec
 
 luminosity = 13.7
 z = 4.43
-fLow = 100 #GHz
-fHigh = 900 #GHz
+fLow = 90 #GHz
+fHigh = 910 #GHz
 numFreqBins = 1500
 linewidth = 600
 gal_freq, gal_flux = galspec.spectrum(luminosity, z, fLow, fHigh, numFreqBins, linewidth, 'Rosenberg', 'Spinoglio', mollines = 'False')
@@ -89,8 +89,8 @@ import numpy as np
 
 luminosity = 13.7
 z = 4.43
-fLow = 100 #GHz
-fHigh = 900 #GHz
+fLow = 90 #GHz
+fHigh = 910 #GHz
 numFreqBins = 1500
 linewidth = 600
 
@@ -112,8 +112,8 @@ import numpy as np
 
 luminosity = 13.7
 z = 4.43
-fLow = 100 #GHz
-fHigh = 900 #GHz
+fLow = 90 #GHz
+fHigh = 910 #GHz
 numFreqBins = 1500
 linewidth = 600
 

@@ -299,7 +299,6 @@ def spectrum(luminosity,redshift,fLow=220,fHigh=440,numFreqBins = 1500,linewidth
     # Output: freqArray -> array frequencies in units of GHz
     # Output: spectrum -> array of the flux densities in the spectrum in units of Jy
     """
-    margin = 10
     # Generate frequency array
     freqArray = np.linspace(fLow-margin, fHigh+margin, numFreqBins)
 	# Create spectrum according to Bakx+2018
