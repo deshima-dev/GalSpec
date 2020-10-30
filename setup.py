@@ -5,12 +5,12 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="galspec", # Replace with your own username
-    version="0.2.3",
+    version="0.2.4",
     author="Tom Bakx (edits: Stefanie Brackenhoff)",
     description="Creates sample galaxy spectra in the GHz/THz range",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Stefanie-B/GalSpec",
+    url="https://github.com/deshima-dev/GalSpec",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
