@@ -92,7 +92,8 @@ def Dlpen(redshift, giveAnswerInMeters = False):
 ##-----------------------------------------
 
 ### Fitting Gaussians
-def gaus(x,a,x0,sigma):
+def gaus(x,a,x0,FWHM):
+    sigma = FWHM / (2*np.sqrt(2*np.log(2)))
     return a*np.exp(-(x-x0)**2/(2*sigma**2))
 
 
