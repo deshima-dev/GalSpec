@@ -1,3 +1,6 @@
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?label=License&style=flat-square)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4279062.svg)](https://doi.org/10.5281/zenodo.4279062)
+
 # GalSpec package
 This package is intended to quickly and easily generate a galaxy spectrum with a blackbody continuum emission and emission lines. The lines in this package are:
 * CO lines 
